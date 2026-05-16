@@ -27,12 +27,17 @@ tags: [news, hotnews, china, weibo, zhihu, douyin]
 
 ## API配置
 
-**公共API（免费，无需Key）：**
+**公共API（默认，免费无需Key）：**
 ```
 https://60s.viki.moe/v2/{platform}
 ```
 
-**自建API（推荐长期使用）：**
+所有人安装后直接可用，无需额外配置。
+
+**自建API（可选，长期稳定）：**
+
+如果你想更稳定、不受公共API限制，可以自己部署：
+
 ```bash
 # Docker部署
 docker run -d --restart always --name 60s -p 4399:4399 vikiboss/60s:latest
@@ -42,16 +47,16 @@ git clone https://github.com/vikiboss/60s.git
 cd 60s && pnpm install && PORT=4399 pnpm start
 ```
 
-自建后API地址：`http://localhost:4399/v2/{platform}`
-
-**配置文件：** `~/.config/china-hotnews/config.json`
+自建后修改配置文件：`~/.config/china-hotnews/config.json`
 ```json
 {
-  "api_base": "https://60s.viki.moe/v2",
+  "api_base": "http://localhost:4399/v2",
   "default_platforms": ["weibo", "zhihu", "douyin"],
   "top_n": 5
 }
 ```
+
+**注意：** 自建API只有你自己能用，其他人默认使用公共API。
 
 ---
 
@@ -62,17 +67,18 @@ cd 60s && pnpm install && PORT=4399 pnpm start
 用户说"抓热点"、"看热搜"、"今日新闻"时执行：
 
 ```bash
-# 获取配置（如果存在）
+# 默认使用公共API（所有人可用）
+curl -s "https://60s.viki.moe/v2/weibo" | jq -r '.data[:5] | .[] | "• \(.title) (\(.hot_value)热度)"'
+
+curl -s "https://60s.viki.moe/v2/zhihu" | jq -r '.data[:5] | .[] | "• \(.title) (\(.hot_value_desc))"'
+
+curl -s "https://60s.viki.moe/v2/douyin" | jq -r '.data[:5] | .[] | "• \(.title) (\(.hot_value)热度)"'
+```
+
+**如果配置了自建API，优先使用本地服务：**
+```bash
 API_BASE=$(cat ~/.config/china-hotnews/config.json 2>/dev/null | jq -r '.api_base' || echo "https://60s.viki.moe/v2")
-
-# 抓取微博热搜
 curl -s "$API_BASE/weibo" | jq -r '.data[:5] | .[] | "• \(.title) (\(.hot_value)热度)"'
-
-# 抓取知乎热榜
-curl -s "$API_BASE/zhihu" | jq -r '.data[:5] | .[] | "• \(.title) (\(.hot_value_desc))"'
-
-# 抓取抖音热点
-curl -s "$API_BASE/douyin" | jq -r '.data[:5] | .[] | "• \(.title) (\(.hot_value)热度)"'
 ```
 
 **输出格式：**
