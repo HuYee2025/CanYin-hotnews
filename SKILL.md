@@ -239,106 +239,70 @@ curl -s "https://60s.viki.moe/v2/weibo" | jq -r ".data | .[] | select(.title | t
 
 ---
 
-### 5. 定时推送（Cron）
+### 6. 餐饮专业资讯抓取（NewsCrawler集成）
 
-**OpenClaw用户：**
+用户说"餐饮专业资讯"、"餐饮新闻抓取"时：
+
+**功能：抓取腾讯新闻、新浪新闻、网易新闻的餐饮专业资讯**
+
+**数据源（NewsCrawler支持）：**
+- 腾讯新闻（news.qq.com）
+- 网易新闻（163.com）
+- 搜狐新闻（sohu.com）
+- 今日头条（toutiao.com）
+- 微信公众号（mp.weixin.qq.com）
+
+**使用方式：**
 ```bash
-openclaw cron add \
-  --name "morning-hotnews" \
-  --cron "0 9 * * *" \
-  --system-event '{"kind":"hotnews_push","platforms":["weibo","zhihu","douyin"],"top_n":5}' \
-  --session main \
-  --tz "Asia/Shanghai"
+# 抓取单篇新闻
+curl -X POST "http://localhost:8001/api/extract" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://www.163.com/dy/article/xxx.html"}'
 ```
 
-**其他系统：**
-```bash
-# 添加到crontab
-0 9 * * * curl -s https://60s.viki.moe/v2/weibo | jq '.data[:5]'
-```
-
----
-
-## 数据实时性
-
-**验证结果：**
-- 抖音数据更新延迟约20秒
-- 微博/知乎数据实时同步
-- **适合定时推送场景**
-
----
-
-## 自建部署（长期方案）
-
-**为什么自建：**
-- 公共API可能在2026年7月20日后受影响（Deno Deploy Classic终止）
-- 自建后永久可用，不受第三方影响
-
-**部署步骤：**
-
-1. Fork项目：https://github.com/vikiboss/60s
-
-2. Docker部署（推荐）：
-```bash
-docker run -d --restart always --name 60s -p 4399:4399 vikiboss/60s:latest
-```
-
-3. Node.js部署：
-```bash
-git clone https://github.com/vikiboss/60s.git
-cd 60s && pnpm install
-PORT=4399 pnpm start
-```
-
-4. 更新配置：
+**输出格式：**
 ```json
 {
-  "api_base": "http://localhost:4399/v2",
-  "default_platforms": ["weibo", "zhihu", "douyin"],
-  "top_n": 5
+  "title": "新闻标题",
+  "texts": ["段落1", "段落2"],
+  "images": ["图片URL"],
+  "platform": "netease"
 }
 ```
 
----
-
-## 兼容性
-
-| 平台 | 支持 | 说明 |
-|------|------|------|
-| OpenClaw | ✅ | 完全支持，推荐使用 |
-| Claude Code | ✅ | 可用，需手动调用curl |
-| Codex | ✅ | 可用，需手动调用curl |
-| Cursor | ✅ | 可用，需手动调用curl |
-| 其他AI助手 | ✅ | 只需能执行shell命令 |
+**部署位置：**
+- NewsCrawler项目：/root/NewsCrawler
+- API服务：http://localhost:8001
+- 启动命令：`cd /root/NewsCrawler && uv run news-extractor-backend --host 0.0.0.0 --port 8001`
 
 ---
 
-## 安装方式
+## 技术架构
 
-**OpenClaw：**
-```bash
-openclaw skills install china-hotnews
-```
+### 数据源
 
-**手动安装：**
-```bash
-mkdir -p ~/.openclaw/workspace/skills/china-hotnews
-# 下载SKILL.md到该目录
-```
+| 功能 | 数据源 | API地址 |
+|------|--------|---------|
+| 社会热点 | 60s API | http://localhost:4398/v2 |
+| 餐饮专业资讯 | NewsCrawler | http://localhost:8001/api |
+
+### 服务部署
+
+**60s API服务：**
+- 端口：4398
+- systemd服务：/etc/systemd/system/60s-api.service
+- 项目路径：/root/60s
+
+**NewsCrawler服务：**
+- 端口：8001
+- 项目路径：/root/NewsCrawler
+- 启动方式：`uv run news-extractor-backend`
 
 ---
 
-## 注意事项
+## 配置文件
 
-- 公共API免费但可能不稳定，建议自建
-- 数据实时性约20秒延迟，足够定时推送
-- 微博/知乎/抖音数据最完整，建议优先使用
-- 无需API Key，完全免费
-
----
-
-## 来源
-
-- API项目：https://github.com/vikiboss/60s
-- 技能作者：HuYee
-- 技能地址：https://github.com/HuYee2025/china-hotnews
+- 主配置：~/.config/china-hotnews/config.json
+- 推送脚本：/root/.openclaw/workspace/scripts/hotnews-push.sh
+- 餐饮洞察脚本：/root/.openclaw/workspace/scripts/catering-insights.sh
+- 餐饮资讯抓取：/root/.openclaw/workspace/scripts/catering-news-crawler.sh
