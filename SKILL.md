@@ -1,21 +1,21 @@
 ---
 name: china-hotnews
-description: 餐饮热点洞察 - 从社会热点中挖掘餐饮营销切入点。触发：用户说"餐饮热点"。
+description: 今日餐饮热点新闻 - 抓取今日最新餐饮新闻，挖掘营销切入点。触发：用户说"餐饮热点"或"餐饮新闻"。
 version: 1.0.0
 author: HuYee
 license: MIT
 tags: [news, hotnews, china, catering, restaurant]
 ---
 
-# china-hotnews: 餐饮热点洞察
+# china-hotnews: 今日餐饮热点新闻
 
-从社会热点中挖掘餐饮营销切入点，为餐饮咨询顾问提供决策支持。
+抓取今日最新餐饮新闻，挖掘营销切入点，为餐饮咨询顾问提供决策支持。
 
 **适用于：OpenClaw / Claude Code / Codex / 其他AI助手**
 
 ## 触发关键词
 
-**用户说"餐饮热点"时触发**
+**用户说"餐饮热点"或"餐饮新闻"时触发**
 
 就这么简单！
 
