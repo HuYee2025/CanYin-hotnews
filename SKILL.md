@@ -1,17 +1,23 @@
 ---
 name: china-hotnews
-description: 抓取国内热点新闻（微博/知乎/抖音/B站等平台热搜），支持定时推送。触发：用户要求"抓热点"、"看热搜"、"今日新闻"、"早上新闻推送"。
+description: 餐饮热点洞察 - 从社会热点中挖掘餐饮营销切入点。触发：用户说"餐饮热点"。
 version: 1.0.0
 author: HuYee
 license: MIT
-tags: [news, hotnews, china, weibo, zhihu, douyin]
+tags: [news, hotnews, china, catering, restaurant]
 ---
 
-# china-hotnews: 国内热点新闻抓取
+# china-hotnews: 餐饮热点洞察
 
-一键抓取微博、知乎、抖音、B站等国内主流平台热搜榜单，支持定时推送。
+从社会热点中挖掘餐饮营销切入点，为餐饮咨询顾问提供决策支持。
 
 **适用于：OpenClaw / Claude Code / Codex / 其他AI助手**
+
+## 触发关键词
+
+**用户说"餐饮热点"时触发**
+
+就这么简单！
 
 ## 支持平台
 
