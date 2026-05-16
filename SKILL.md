@@ -241,7 +241,7 @@ curl -s "https://60s.viki.moe/v2/weibo" | jq -r ".data | .[] | select(.title | t
 
 ### 6. 餐饮专业资讯抓取（NewsCrawler集成）
 
-用户说"餐饮专业资讯"、"餐饮新闻抓取"时：
+用户说"餐饮专业资讯"、"餐饮新闻抓取"、"抓取新闻"时：
 
 **功能：抓取腾讯新闻、新浪新闻、网易新闻的餐饮专业资讯**
 
@@ -252,10 +252,15 @@ curl -s "https://60s.viki.moe/v2/weibo" | jq -r ".data | .[] | select(.title | t
 - 今日头条（toutiao.com）
 - 微信公众号（mp.weixin.qq.com）
 
+**公共API（所有人可用）：**
+```
+http://43.163.201.57:8001/api/extract
+```
+
 **使用方式：**
 ```bash
 # 抓取单篇新闻
-curl -X POST "http://localhost:8001/api/extract" \
+curl -X POST "http://43.163.201.57:8001/api/extract" \
   -H "Content-Type: application/json" \
   -d '{"url": "https://www.163.com/dy/article/xxx.html"}'
 ```
@@ -263,17 +268,27 @@ curl -X POST "http://localhost:8001/api/extract" \
 **输出格式：**
 ```json
 {
-  "title": "新闻标题",
-  "texts": ["段落1", "段落2"],
-  "images": ["图片URL"],
-  "platform": "netease"
+  "status": "success",
+  "data": {
+    "title": "新闻标题",
+    "texts": ["段落1", "段落2"],
+    "images": ["图片URL"],
+    "platform": "netease"
+  }
 }
 ```
 
-**部署位置：**
-- NewsCrawler项目：/root/NewsCrawler
-- API服务：http://localhost:8001
-- 启动命令：`cd /root/NewsCrawler && uv run news-extractor-backend --host 0.0.0.0 --port 8001`
+**示例：抓取网易餐饮新闻**
+```bash
+curl -X POST "http://43.163.201.57:8001/api/extract" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://www.163.com/dy/article/JMUCT9OD05228QIT.html"}' | jq '.data.title'
+```
+
+**查看支持的平台：**
+```bash
+curl http://43.163.201.57:8001/api/platforms
+```
 
 ---
 
