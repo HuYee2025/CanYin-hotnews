@@ -128,7 +128,32 @@ curl -s "https://60s.viki.moe/v2/60s" | jq '.data'
 💡 每日微语：生活从不会主动优待谁，主动奔赴前路拼搏，方能握住人生主动权
 ```
 
-### 4. 定时推送（Cron）
+### 4. 行业热点筛选
+
+用户说"餐饮行业热点"、"科技行业热点"、"金融热点"时：
+
+**预设行业：**
+- 餐饮、科技、金融、教育、医疗、娱乐、房产、汽车、时尚、农业
+
+**执行：**
+```bash
+# 加载行业关键词
+INDUSTRY="餐饮"
+KEYWORDS=$(cat ~/.config/china-hotnews/industries.json | jq -r ".industries.\"$INDUSTRY\" | join(\"|\")")
+
+# 从各平台筛选行业相关热点
+curl -s "https://60s.viki.moe/v2/weibo" | jq -r ".data | .[] | select(.title | test(\"$KEYWORDS\"; \"i\")) | \"• [\(.title)](\(.link)) (\(.hot_value)热度)\"" | head -5
+```
+
+**自定义行业关键词：**
+```bash
+# 用户可以自定义关键词筛选
+curl -s "https://60s.viki.moe/v2/weibo" | jq -r ".data | .[] | select(.title | test(\"咖啡|奶茶|火锅|烧烤\"; \"i\")) | \"• \(.title)\""
+```
+
+---
+
+### 5. 定时推送（Cron）
 
 **OpenClaw用户：**
 ```bash
