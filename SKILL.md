@@ -21,8 +21,6 @@ tags: [news, hotnews, china, catering, restaurant]
 
 ## 支持平台
 
-### 社交平台热点（60s API）
-
 | 平台 | 端点 | 数据 |
 |------|------|------|
 | 微博热搜 | `/weibo` | 标题+热度值+链接 |
@@ -32,24 +30,11 @@ tags: [news, hotnews, china, catering, restaurant]
 | 小红书热榜 | `/rednote` | 标题+热度+链接 |
 | 百度热搜 | `/baidu/hot` | 标题+热度+描述 |
 
-### 新闻网站热点（orz.ai API）
-
-| 平台 | 平台代码 | 数据 |
-|------|----------|------|
-| 腾讯网 | `tenxunwang` | 综合新闻、娱乐、科技 |
-| 新浪财经 | `sina_finance` | 财经新闻、股市资讯 |
-| 今日头条 | `jinritoutiao` | 新闻、热点事件 |
-
 ## API配置
 
-**社会热点API（默认，免费无需Key）：**
+**公共API（默认，免费无需Key）：**
 ```
 https://60s.viki.moe/v2/{platform}
-```
-
-**新闻网站热点API（免费无需Key）：**
-```
-https://orz.ai/api/v1/dailynews/?platform={platform_code}
 ```
 
 所有人安装后直接可用，无需额外配置。
@@ -277,85 +262,8 @@ curl -s "https://60s.viki.moe/v2/weibo" | jq -r ".data | .[] | select(.title | t
 
 ---
 
-### 6. 餐饮专业资讯抓取（NewsCrawler集成）
-
-用户说"餐饮专业资讯"、"餐饮新闻抓取"、"抓取新闻"时：
-
-**功能：抓取腾讯新闻、新浪新闻、网易新闻的餐饮专业资讯**
-
-**数据源（NewsCrawler支持）：**
-- 腾讯新闻（news.qq.com）
-- 网易新闻（163.com）
-- 搜狐新闻（sohu.com）
-- 今日头条（toutiao.com）
-- 微信公众号（mp.weixin.qq.com）
-
-**公共API（所有人可用）：**
-```
-http://43.163.201.57:8001/api/extract
-```
-
-**使用方式：**
-```bash
-# 抓取单篇新闻
-curl -X POST "http://43.163.201.57:8001/api/extract" \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://www.163.com/dy/article/xxx.html"}'
-```
-
-**输出格式：**
-```json
-{
-  "status": "success",
-  "data": {
-    "title": "新闻标题",
-    "texts": ["段落1", "段落2"],
-    "images": ["图片URL"],
-    "platform": "netease"
-  }
-}
-```
-
-**示例：抓取网易餐饮新闻**
-```bash
-curl -X POST "http://43.163.201.57:8001/api/extract" \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://www.163.com/dy/article/JMUCT9OD05228QIT.html"}' | jq '.data.title'
-```
-
-**查看支持的平台：**
-```bash
-curl http://43.163.201.57:8001/api/platforms
-```
-
----
-
-## 技术架构
-
-### 数据源
-
-| 功能 | 数据源 | API地址 |
-|------|--------|---------|
-| 社会热点 | 60s API | http://localhost:4398/v2 |
-| 餐饮专业资讯 | NewsCrawler | http://localhost:8001/api |
-
-### 服务部署
-
-**60s API服务：**
-- 端口：4398
-- systemd服务：/etc/systemd/system/60s-api.service
-- 项目路径：/root/60s
-
-**NewsCrawler服务：**
-- 端口：8001
-- 项目路径：/root/NewsCrawler
-- 启动方式：`uv run news-extractor-backend`
-
----
-
 ## 配置文件
 
 - 主配置：~/.config/china-hotnews/config.json
 - 推送脚本：/root/.openclaw/workspace/scripts/hotnews-push.sh
 - 餐饮洞察脚本：/root/.openclaw/workspace/scripts/catering-insights.sh
-- 餐饮资讯抓取：/root/.openclaw/workspace/scripts/catering-news-crawler.sh
