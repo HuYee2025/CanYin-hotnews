@@ -5,15 +5,17 @@
 ## 快速开始
 
 ```bash
-# 微博热搜
-curl -s "https://60s.viki.moe/v2/weibo" | jq '.data[:5]'
+# 微博热搜（可点击查看详情）
+curl -s "https://60s.viki.moe/v2/weibo" | jq -r '.data[:5] | .[] | "• [\(.title)](\(.link)) (\(.hot_value)热度)"'
 
-# 知乎热榜
-curl -s "https://60s.viki.moe/v2/zhihu" | jq '.data[:5]'
+# 知乎热榜（可点击查看详情）
+curl -s "https://60s.viki.moe/v2/zhihu" | jq -r '.data[:5] | .[] | "• [\(.title)](\(.link)) (\(.hot_value_desc))"'
 
-# 抖音热点
-curl -s "https://60s.viki.moe/v2/douyin" | jq '.data[:5]'
+# 抖音热点（可点击查看详情）
+curl -s "https://60s.viki.moe/v2/douyin" | jq -r '.data[:5] | .[] | "• [\(.title)](\(.link)) (\(.hot_value)热度)"'
 ```
+
+**点击标题即可查看详细内容！**
 
 ## 安装
 
