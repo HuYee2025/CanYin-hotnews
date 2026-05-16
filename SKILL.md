@@ -21,6 +21,8 @@ tags: [news, hotnews, china, catering, restaurant]
 
 ## 支持平台
 
+### 社交平台热点（60s API）
+
 | 平台 | 端点 | 数据 |
 |------|------|------|
 | 微博热搜 | `/weibo` | 标题+热度值+链接 |
@@ -28,17 +30,26 @@ tags: [news, hotnews, china, catering, restaurant]
 | 抖音热点 | `/douyin` | 标题+热度值+封面 |
 | B站热门 | `/bili` | 标题+播放量 |
 | 小红书热榜 | `/rednote` | 标题+热度+链接 |
-| 今日头条 | `/toutiao` | 标题+热度+封面 |
 | 百度热搜 | `/baidu/hot` | 标题+热度+描述 |
-| 贴吧热议 | `/baidu/tieba` | 标题+讨论数 |
-| 懂车帝 | `/dongchedi` | 汽车资讯热榜 |
-| 每天60秒 | `/60s` | 15条精选新闻 |
+
+### 新闻网站热点（orz.ai API）
+
+| 平台 | 平台代码 | 数据 |
+|------|----------|------|
+| 腾讯网 | `tenxunwang` | 综合新闻、娱乐、科技 |
+| 新浪财经 | `sina_finance` | 财经新闻、股市资讯 |
+| 今日头条 | `jinritoutiao` | 新闻、热点事件 |
 
 ## API配置
 
-**公共API（默认，免费无需Key）：**
+**社会热点API（默认，免费无需Key）：**
 ```
 https://60s.viki.moe/v2/{platform}
+```
+
+**新闻网站热点API（免费无需Key）：**
+```
+https://orz.ai/api/v1/dailynews/?platform={platform_code}
 ```
 
 所有人安装后直接可用，无需额外配置。
