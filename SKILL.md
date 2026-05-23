@@ -1,6 +1,6 @@
 ---
 name: china-hotnews
-description: 今日餐饮热点新闻 - 抓取今日最新餐饮新闻，挖掘营销切入点。触发：用户说"餐饮热点"或"餐饮新闻"。
+description: 今日餐饮热点新闻 - 抓取今日最新餐饮新闻，挖掘营销切入点。支持微博/知乎/抖音/B站/今日头条/百度等平台热搜，及红餐网等行业资讯。触发：用户说"餐饮热点"或"餐饮新闻"。
 version: 1.2.0
 author: HuYee
 license: MIT
@@ -27,8 +27,10 @@ tags: [news, hotnews, china, catering, restaurant]
 |------|------|------|
 | 微博热搜 | `/weibo` | 标题+热度值+链接 |
 | 知乎热榜 | `/zhihu` | 标题+详情+热度+回答数 |
-| 抖音热点 | `/douyin` | 标题+热度值+封面 |
 | 百度热搜 | `/baidu/hot` | 标题+热度+描述 |
+| 抖音热点 | `/douyin` | 标题+热度值+封面 |
+| B站热搜 | `/bili` | 标题+链接 |
+| 今日头条 | `/toutiao` | 标题+热度值+链接 |
 
 ### 餐饮专业资讯（今日最新）
 
@@ -46,14 +48,18 @@ tags: [news, hotnews, china, catering, restaurant]
 **步骤1：抓取社交平台热点**
 ```bash
 API_BASE="http://localhost:4398/v2"  # 本地部署优先
-curl -s "$API_BASE/weibo" | jq -r '.data[:15] | .[] | .title'
-curl -s "$API_BASE/zhihu" | jq -r '.data[:15] | .[] | .title'
-curl -s "$API_BASE/baidu/hot" | jq -r '.data[:15] | .[] | .title'
+curl -s "$API_BASE/weibo" | jq -r '.data[:20] | .[] | .title'
+curl -s "$API_BASE/zhihu" | jq -r '.data[:20] | .[] | .title'
+curl -s "$API_BASE/baidu/hot" | jq -r '.data[:20] | .[] | .title'
+curl -s "$API_BASE/douyin" | jq -r '.data[:20] | .[] | .title'
+curl -s "$API_BASE/bili" | jq -r '.data[:20] | .[] | .title'
+curl -s "$API_BASE/toutiao" | jq -r '.data[:20] | .[] | .title'
 ```
 
 **异常处理：**
 - 如果本地API失败，降级使用公共API：`https://60s.viki.moe/v2`
 - 如果公共API也失败，仅使用餐饮专业资讯
+- 个别平台API故障时，不影响其他平台数据的抓取
 
 **步骤2：筛选餐饮相关热点**
 
