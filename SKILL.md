@@ -1,13 +1,13 @@
 ---
-name: china-hotnews
+name: CanYin-hotnews
 description: 餐饮品牌经营热点搜索与可靠性筛选。基于张总餐饮品牌顾问视角，为“张总短视频”项目搜索、筛选和核查餐饮行业新闻，优先输出可转化为老板痛点、反常识判断、案例证据和经营动作的选题。触发：餐饮热点、餐饮新闻、今天适合张总讲的新闻、餐饮品牌案例、餐饮行业选题。
-version: 2.1.0
+version: 2.1.1
 author: HuYee
 license: MIT
 tags: [news, hotnews, china, catering, restaurant, brand-positioning, zhang-perspective, fact-check]
 ---
 
-# china-hotnews: 餐饮品牌经营热点搜索（张总短视频版）
+# CanYin-hotnews: 餐饮品牌经营热点搜索（张总短视频版）
 
 本技能用于给“张总短视频”项目找新闻选题。它不是泛餐饮热榜工具，而是从新闻、行业资讯、平台热点和品牌案例中筛选对餐饮品牌老板有经营参考价值的内容。
 
@@ -365,6 +365,7 @@ docker run -d --restart always --name 60s -p 4398:4398 vikiboss/60s:latest
 
 ## 版本历史
 
+- v2.1.1（2026-06-09）：统一本地技能目录名、SKILL name 字段和 GitHub 仓库名为 CanYin-hotnews。
 - v2.1.0（2026-06-08）：按“张总短视频”项目重写搜索有效性与可靠性规则；新增四路线搜索、二阶段筛选、来源分级、交叉核查、短视频转化评分、头部/腰部品牌案例追踪和不出稿清单。
 - v2.0.0（2026-06-06）：重构为张总品牌定位视角版，聚焦腰部餐厅品牌老板，增加排除规则、六维标签和老板动作输出。
 - v1.2.0：增加 B 站和今日头条数据源，增加小龙虾、榴莲等搜索关键词。
