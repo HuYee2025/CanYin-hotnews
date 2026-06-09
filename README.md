@@ -6,6 +6,10 @@
 
 激活关键词：餐饮热点、餐饮新闻、今天适合张总讲的新闻、餐饮品牌案例、餐饮行业选题。
 
+## v2.1.1 更新重点
+
+- 统一技能名称为 `CanYin-hotnews`，与 GitHub 仓库名和本地安装目录保持一致。
+
 ## v2.1.0 更新重点
 
 本次更新把搜索逻辑从“抓热榜 + 关键词过滤”升级为“经营议题优先 + 多源核查 + 短视频转化评分”。
@@ -62,13 +66,13 @@ curl -s "https://60s.viki.moe/v2/douyin" | jq -r '.data[:5] | .[] | "• \(.titl
 OpenClaw:
 
 ```bash
-openclaw skills install china-hotnews
+openclaw skills install CanYin-hotnews
 ```
 
 手动安装:
 
 ```bash
-mkdir -p ~/.openclaw/workspace/skills/china-hotnews
+mkdir -p ~/.openclaw/workspace/skills/CanYin-hotnews
 # 下载 SKILL.md 到该目录
 ```
 
